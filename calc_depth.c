@@ -43,14 +43,22 @@ void calc_depth(unsigned char *depth_map, unsigned char *left,
 		for(int q = 1; q<image_height; q++){
 			for(int w = 0; w<(2*feature_width+1); w++){
 				for(int x= 0; x<(2*feature_width+1); x++){
-					for(int x= 0; x<(2*feature_width+1); x++){
-						featurel[w][x] = *(left+(top+x));
-						featurer[w][x] = *(right+(top+x));		
-						*(depth_map+k) = 255;
-					}
+					featurel[w][x] = *(left+(top+x));
 				}
-			top = top + image_width; 
+				for(int y = 0; y<2*feature_width+1; y++){
+					featurer[x][y] = *(right+(top+y));
+				}
 			}
+		for(int com = 0; com<2*feature_width+1; com++){
+			for (int moc = 0; moc<2*feature_height; moc++){
+				//a1 = featurel[com][moc];
+				//b1 = featurer[com][moc];
+				es = distan_eucli(featurel [2*feature_width+1] [2*feature_width+1], featurer[2*feature_width+1] [2*feature_width+1], 2*feature_width+1);
+				if
+			}
+		}
+		top = top + image_width; 
+		}
 		}
 	}
 }
@@ -74,21 +82,14 @@ void calc_depth(unsigned char *depth_map, unsigned char *left,
 }
 }
 */
-int distan_eucli(int k, int m, int c){
-		int res = ((k-m)*(k-m)); 
-		if (res == 0){
-			return 0;
-		}
-	return res;
-}
-/*int distan_eucli(char a[], char b[], int len){
+int distan_eucli(char a[] [], char b[] [], int len){
 	int i; 
-	char k, m;
 	int res = 0;
 	for(i = 0; i < len; i++){
-		k = a[i];
-		m = b[i]; 
+		for( int j= 0; j< len; j++)
+		k = a[i][j];
+		m = b[i][j]; 
 		res = res + ((k-m)*(k-m)); 
 		}
 	return res;
-}*/
+}
