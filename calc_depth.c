@@ -25,11 +25,11 @@ unsigned char normalized_displacement(int dx, int dy,
 void calc_depth(unsigned char *depth_map, unsigned char *left,
                 unsigned char *right, int image_width, int image_height,
                 int feature_width, int feature_height, int maximum_displacement) {
-	//int es = 0;
+	int es = 0;
 	//int a1 = 0; 
 	int top = 0;
 	char featurel [2*feature_width+1] [2*feature_height+1];
-	//char featurer [2*feature_width+1] [2*feature_height+1];
+	char featurer [2*feature_width+1] [2*feature_height+1];
 	
 	// 0 en depth.
 	for(int i = 0; i<image_width; i++){ *(depth_map+i) = 0; }
@@ -41,29 +41,43 @@ void calc_depth(unsigned char *depth_map, unsigned char *left,
 	for(int k = 1+image_width; k<image_width*image_height; k++){
 		//int top = k-1-image_width;
 		for(int q = 1; q<image_height; q++){
-			for(int w = 0; w<(2*feature_width+1); w++){
-				for(int x= 0; x<(2*feature_width+1); x++){
-					featurel[w][x] = *(left+(top+x));
-				}
-				for(int y = 0; y<2*feature_width+1; y++){
-					featurer[x][y] = *(right+(top+y));
-				}
+			if (((k-image_width > 0) && (q-image_height > 0)) && 
+				(((k-image_width)+2*feature_width+1 < image_width) 
+				&& ((q-image_height)+2*feature_height+1 < image_height))){
+
+				for(int w = 0; w<(2*feature_width+1); w++){
+					for(int x= 0; x<(2*feature_width+1); x++){
+						featurel[w][x] = *(left+(top+x));
+					}
+				}//calcular 121
+
+				while(){//mientras q sea 0.
+				//max_dis  //x entre +-max dis AND y entre +- maxdis
+/**/						int ll = maximum_displacement;
+							int maxab = ll*image_width; 
+							int maxlr = ll*image_height;
+							if(k < maxab) 
+						for(int gg =0; gg 
+
+						if(){
+							for(int y = 0; y<2*feature_width+1; y++){
+								for(int x=0:x<2*feature_height+1;x++){
+									featurer[y][x] = *(right+(top+x));
+								}
+							}//features llenas :v
+							//ya calcula distancia
+							es = distan_eucli(featurel [2*feature_width+1] [2*feature_width+1], featurer[2*feature_width+1] [2*feature_width+1], 2*feature_width+1);
+
+						}	//comparar dEclda
+				}// /max_dis
+				top = top + image_width; 
 			}
-		for(int com = 0; com<2*feature_width+1; com++){
-			for (int moc = 0; moc<2*feature_height; moc++){
-				//a1 = featurel[com][moc];
-				//b1 = featurer[com][moc];
-				es = distan_eucli(featurel [2*feature_width+1] [2*feature_width+1], featurer[2*feature_width+1] [2*feature_width+1], 2*feature_width+1);
-				if
-			}
-		}
-		top = top + image_width; 
-		}
 		}
 	}
 }
 		/*
 		//	if (((k-image_width > 0) && (q-image_height > 0)) && (((k-image_width)+2*feature_width+1 < image_width) && ((q-image_height)+2*feature_height+1 < image_height))){
+		
 				
 				//	a1 = featurel[w][x];
 						b1 = featurer[w][w]; 
@@ -83,10 +97,11 @@ void calc_depth(unsigned char *depth_map, unsigned char *left,
 }
 */
 int distan_eucli(char a[] [], char b[] [], int len){
-	int i; 
+	char k,m;
+	int i,j; 
 	int res = 0;
 	for(i = 0; i < len; i++){
-		for( int j= 0; j< len; j++)
+		for(j= 0; j< len; j++)
 		k = a[i][j];
 		m = b[i][j]; 
 		res = res + ((k-m)*(k-m)); 
