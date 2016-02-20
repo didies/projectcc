@@ -8,7 +8,6 @@
 #include "utils.h"
 #include <math.h>
 #include <stdio.h>
-int distan_eucli(int a, int b, int c);
 
 unsigned char normalized_displacement(int, int, int);
 
@@ -26,85 +25,90 @@ void calc_depth(unsigned char *depth_map, unsigned char *left,
                 unsigned char *right, int image_width, int image_height,
                 int feature_width, int feature_height, int maximum_displacement) {
 	int es = 0;
-	//int a1 = 0; 
-	int top = 0;
+	int a = 666666666; 
+	int topl = 0;
+	int topr = 0;
 	char featurel [2*feature_width+1] [2*feature_height+1];
 	char featurer [2*feature_width+1] [2*feature_height+1];
-	
+	int maxab = maximum_displacement*image_width; 
+	int maxlr = maximum_displacement;
+	int tama = maximum_displacement*image_width;
+	int tamb = maximum_displacement*image_height; 
+	int temi = maximum_displacement;
+	int temd = maximum_displacement; 
 	// 0 en depth.
 	for(int i = 0; i<image_width; i++){ *(depth_map+i) = 0; }
 	for(int y = image_height*image_width; y>(image_width*image_height)-image_width; y--){ *(depth_map+y) = 0; }
 	for(int j = 0; j<image_width*image_height; j= j + image_width){ *(depth_map+j) = 0; *(depth_map+(j-1)) = 0; }
-
 	// x(1,1).
 	//parche left.
 	for(int k = 1+image_width; k<image_width*image_height; k++){
-		//int top = k-1-image_width;
-		for(int q = 1; q<image_height; q++){
-			if (((k-image_width > 0) && (q-image_height > 0)) && 
-				(((k-image_width)+2*feature_width+1 < image_width) 
-				&& ((q-image_height)+2*feature_height+1 < image_height))){
-
+		topl = image_width+1;
+		topr = image_width+1;		
+		//
+		//for(int q = 1; q<image_height; q++){
+			//if (((k-image_width > 0) && (q-image_height > 0)) && (((k-image_width)+2*feature_width+1 < image_width) && ((q-image_height)+2*feature_height+1 < image_height))){
 				for(int w = 0; w<(2*feature_width+1); w++){
 					for(int x= 0; x<(2*feature_width+1); x++){
-						featurel[w][x] = *(left+(top+x));
+						featurel[w][x] = *(left+(topl+x));
+						//printf("%c\t", featurel[w][x]);
+						//
 					}
-				}//calcular 121
-
-				while(){//mientras q sea 0.
-				//max_dis  //x entre +-max dis AND y entre +- maxdis
-/**/						int ll = maximum_displacement;
-							int maxab = ll*image_width; 
-							int maxlr = ll*image_height;
-							if(k < maxab) 
-						for(int gg =0; gg 
-
-						if(){
-							for(int y = 0; y<2*feature_width+1; y++){
-								for(int x=0:x<2*feature_height+1;x++){
-									featurer[y][x] = *(right+(top+x));
-								}
-							}//features llenas :v
-							//ya calcula distancia
-							es = distan_eucli(featurel [2*feature_width+1] [2*feature_width+1], featurer[2*feature_width+1] [2*feature_width+1], 2*feature_width+1);
-
-						}	//comparar dEclda
-				}// /max_dis
-				top = top + image_width; 
-			}
-		}
-	}
-}
-		/*
-		//	if (((k-image_width > 0) && (q-image_height > 0)) && (((k-image_width)+2*feature_width+1 < image_width) && ((q-image_height)+2*feature_height+1 < image_height))){
-		
-				
-				//	a1 = featurel[w][x];
-						b1 = featurer[w][w]; 
-						es = distan_eucli(a1, b1, 1);
-						if(es != 0){
-							*(depth_map)= 0; 
-						}
-						if(es == 0){
-							*(depth_map) = 128;
-					}
+					topl = topl + image_width;
 				}
+
+
+				//while(){//mientras q sea 0.
+				//max_dis  //x entre +-max dis AND y entre +- maxdis
+/**/				 
+				if(k < maxab){
+					tama = maxab -(maxab - k);}
+				if(k+maxab > image_width*image_height){
+					tamb =  image_width*image_height- (k - maxab);} 
+				if(k-image_width < maxlr){
+					temi = maxlr - (maxlr -(k-image_width));} 
+				if(k+maxlr > image_height){
+					temd = image_height - (k-image_width);}
+				
+				for(int gg =k-tama-1; gg<tamb; gg= gg + image_width){
+					
+					for(int gg2 = (k-image_width)-temi; gg2<temd; gg2++){
+						*(depth_map+k) = 255;
+						for(int y = 0; y<2*feature_width+1; y++){
+							for(int x=0; x<2*feature_height+1;x++){
+								featurer[y][x] = *(right+(topr+x));
+								//printf("%d\t", featurer[y][x]);
+
+							}
+						}
+
+						char pop= 0; 
+						char m = 0; 
+						int jj3;
+						for(int ii = 0; ii < 2*feature_width+1; ii++){
+							for(jj3= 0; jj3< 2*feature_height+1; jj3++){
+							pop = featurel[ii][jj3];
+							m = featurer[ii][jj3];
+							es = es + ((pop-m)*(pop-m)); 
+							//printf("%d\t", es);
+							if(es < a){
+								a = es;
+							//if(es == 0){
+							//	*(depth_map+k) = 0;
+							//}
+							if(es == 0){
+								*(depth_map+k) = 128;
+							}
+						}
+					
+				
+						//features llenas :v
+						//ya calcula distanc
+			}	//comparar dEclda
+		}// /max_dis
+		topr = topr + image_width;
 			}
 		//}
-		top = top+image_width;
 	//}
 }
-}
-*/
-int distan_eucli(char a[] [], char b[] [], int len){
-	char k,m;
-	int i,j; 
-	int res = 0;
-	for(i = 0; i < len; i++){
-		for(j= 0; j< len; j++)
-		k = a[i][j];
-		m = b[i][j]; 
-		res = res + ((k-m)*(k-m)); 
-		}
-	return res;
 }
